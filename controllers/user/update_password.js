@@ -1,6 +1,5 @@
 require("dotenv").config();
 const bcrypt = require("bcrypt");
-
 const { getConnection } = require("../../db");
 const { editPasswordSchema } = require("../../validations/update_password");
 const { generateError } = require("../../helpers");
