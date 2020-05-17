@@ -1,0 +1,85 @@
+require("dotenv").config();
+const bcrypt = require("bcrypt");
+
+const { getConnection } = require("./db");
+
+async function initialDB() {
+  const connection = await getConnection();
+
+  console.log("Borrando tablas si existen");
+  await connection.query("DROP TABLE IF EXISTS user");
+  await connection.query("DROP TABLE IF EXISTS catalogue");
+  await connection.query("DROP TABLE IF EXISTS product");
+  await connection.query("DROP TABLE IF EXISTS transactions");
+
+  console.log("Creando tablas de BB.DD.");
+
+  // linea 28, fecha modificacion password //
+
+  await connection.query(`CREATE TABLE user 
+(
+	pk_id INT PRIMARY KEY AUTO_INCREMENT,
+	name varchar (255) not null,
+	address varchar (255) not null,
+  email varchar (255) not null,
+  birthdate datetime not null,
+	password varchar(255) not null,
+	creation_date DATE,
+  modification_date TIMESTAMP, 
+  date_last_update default datetime NOW() update NOW(),
+  profile_picture varchar(255) default null,
+  role enum ('normal','loader','admin') default 'normal' not null,
+  active boolean default false not null,
+  registrationcode varchar (200)
+);`);
+
+  await connection.query(`CREATE TABLE catalogue
+(
+	pk_id INT PRIMARY KEY AUTO_INCREMENT,
+	name varchar (255) not null,
+	description varchar (255) not null,
+	creation_date DATE,
+    modification_date TIMESTAMP
+);`);
+
+  await connection.query(`CREATE TABLE product 
+(
+	pk_id INT PRIMARY KEY AUTO_INCREMENT,
+    id_section int,
+    id_user int,
+	name varchar (255) not null,
+	description varchar (255) not null,
+	price varchar(100) not null,
+    creation_date DATE,
+	modification_date TIMESTAMP,
+    foreign key (id_section) references catalogue (pk_id),
+    foreign key(id_user) references user (pk_id)
+);`);
+
+  await connection.query(`CREATE TABLE transactions 
+(
+	pk_id INT PRIMARY KEY AUTO_INCREMENT,
+    id_product int, 
+    id_user int,
+    description varchar (255) not null,
+    rating int not null,
+    creation_date DATE,
+    modification_date TIMESTAMP,
+    foreign key (id_product) references product (pk_id),
+    foreign key (id_user) references user (pk_id)
+);`);
+
+  // Create initial admin_user
+  const password = await bcrypt.hash(process.env.DEFAULT_ADMIN_PASSWORD, 10);
+
+  // arreglar los insert
+  await connection.query(`
+        INSERT INTO user(name, address, email, birthdate, password,creation_date,role, active)
+        VALUES("Brais", "Galicia","bmontans@gmail.com","1991-07-12", "${password}",NOW(), "admin",true)
+      `);
+
+  connection.release();
+  process.exit();
+}
+
+initialDB();
