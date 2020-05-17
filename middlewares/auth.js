@@ -44,7 +44,7 @@ async function userIsAuthenticated(req, res, next) {
     const [
       result,
     ] = await connection.query(
-      "SELECT modificationdate FROM user WHERE pk_id=?",
+      "SELECT modification_date FROM user WHERE pk_id=?",
       [id]
     );
 

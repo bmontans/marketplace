@@ -1,7 +1,5 @@
 require("dotenv").config();
 
-// test 3 //
-
 const express = require("express");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
