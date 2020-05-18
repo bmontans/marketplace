@@ -18,6 +18,7 @@ const { updatePassword } = require("./controllers/user/update_password");
 const { userIsAuthenticated, userIsAdmin } = require("./middlewares/auth");
 const { deleteUser } = require("./controllers/user/delete_user");
 const { deactivateUser } = require("./controllers/user/deactivate_user");
+const { newProduct } = require("./controllers/product/new_product");
 
 app.use(morgan("dev"));
 app.use(bodyParser.json());
@@ -36,16 +37,14 @@ app.put("/user/:id", userIsAuthenticated, userIsAdmin, editUser); // editar usua
 app.delete("/user/:id", userIsAuthenticated, userIsAdmin, deleteUser); //borrar usuario
 app.put("/user/deactivate/:id", userIsAuthenticated, deactivateUser); //desactivar usuario
 
-/*
-
 //RUTAS PRODUCTO
-app.get('/products'); 
-app.post('/product/:id');
-app.get('/product/:id');
-app.put('/product/:id');
-app.delete('/products/:id');
+// app.get("/products");
+app.post("/product", newProduct);
+// app.get("/product/:id");
+// app.put("/product/:id");
+// app.delete("/products/:id");
 
-//RUTAS VALORACIONES
+/*//RUTAS VALORACIONES
 app.post('/products/:id/rating');
 app.get('/ratings'); //TOPFIVE
 
