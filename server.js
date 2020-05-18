@@ -19,6 +19,8 @@ const { userIsAuthenticated, userIsAdmin } = require('./middlewares/auth');
 const { deleteUser } = require('./controllers/user/delete_user');
 const { deactivateUser } = require('./controllers/user/deactivate_user');
 const { newProduct } = require('./controllers/product/new_product');
+const { productData } = require('./controllers/product/product_data');
+const { editProduct } = require('./controllers/product/edit_product');
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
@@ -40,8 +42,8 @@ app.put('/user/deactivate/:id', userIsAuthenticated, deactivateUser); //desactiv
 //RUTAS PRODUCTO
 // app.get("/products");
 app.post('/product', userIsAuthenticated, newProduct);
-// app.get("/product/:id");
-// app.put("/product/:id");
+app.get('/product/:id', userIsAuthenticated, userIsAdmin, productData);
+app.put('/product/:id', userIsAuthenticated, userIsAdmin, editProduct);
 // app.delete("/products/:id");
 
 /*//RUTAS VALORACIONES

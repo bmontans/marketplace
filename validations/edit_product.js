@@ -1,7 +1,7 @@
 const Joi = require('@hapi/joi').extend(require('@hapi/joi-date'));
 const { generateError } = require('../helpers');
 
-const newProductSchema = Joi.object().keys({
+const editProductSchema = Joi.object().keys({
   name: Joi.string()
     .max(50)
     .min(2)
@@ -15,5 +15,5 @@ const newProductSchema = Joi.object().keys({
   price: Joi.number().required()
 });
 module.exports = {
-  newProductSchema
+  editProductSchema
 };
