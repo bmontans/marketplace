@@ -7,10 +7,10 @@ async function initialDB() {
   const connection = await getConnection();
 
   console.log("Borrando tablas si existen");
-  await connection.query("DROP TABLE IF EXISTS user");
+  await connection.query("DROP TABLE IF EXISTS transactions");
   await connection.query("DROP TABLE IF EXISTS catalogue");
   await connection.query("DROP TABLE IF EXISTS product");
-  await connection.query("DROP TABLE IF EXISTS transactions");
+  await connection.query("DROP TABLE IF EXISTS user");
 
   console.log("Creando tablas de BB.DD.");
 
@@ -26,34 +26,34 @@ async function initialDB() {
 	password varchar(255) not null,
 	creation_date DATE,
   modification_date TIMESTAMP, 
-  date_last_update default datetime NOW() update NOW(),
+  date_last_update datetime default NOW() on update NOW(),
   profile_picture varchar(255) default null,
   role enum ('normal','loader','admin') default 'normal' not null,
   active boolean default false not null,
   registrationcode varchar (200)
 );`);
 
+  await connection.query(`CREATE TABLE product 
+(
+	  pk_id INT PRIMARY KEY AUTO_INCREMENT,
+    id_user int,
+	  name varchar (255) not null,
+	  description varchar (255) not null,
+	  price varchar(100) not null,
+    creation_date DATE,
+	  modification_date TIMESTAMP,
+    foreign key(id_user) references user (pk_id)
+);`);
+
   await connection.query(`CREATE TABLE catalogue
 (
-	pk_id INT PRIMARY KEY AUTO_INCREMENT,
+  pk_id INT PRIMARY KEY AUTO_INCREMENT,
+  id_product int,
 	name varchar (255) not null,
 	description varchar (255) not null,
 	creation_date DATE,
-    modification_date TIMESTAMP
-);`);
-
-  await connection.query(`CREATE TABLE product 
-(
-	pk_id INT PRIMARY KEY AUTO_INCREMENT,
-    id_section int,
-    id_user int,
-	name varchar (255) not null,
-	description varchar (255) not null,
-	price varchar(100) not null,
-    creation_date DATE,
-	modification_date TIMESTAMP,
-    foreign key (id_section) references catalogue (pk_id),
-    foreign key(id_user) references user (pk_id)
+  modification_date TIMESTAMP,
+  foreign key (id_product) references product (pk_id)
 );`);
 
   await connection.query(`CREATE TABLE transactions 
@@ -77,6 +77,8 @@ async function initialDB() {
         INSERT INTO user(name, address, email, birthdate, password,creation_date,role, active)
         VALUES("Brais", "Galicia","bmontans@gmail.com","1991-07-12", "${password}",NOW(), "admin",true)
       `);
+
+  console.log("Base de datos creada con éxito");
 
   connection.release();
   process.exit();

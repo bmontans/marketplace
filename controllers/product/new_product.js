@@ -46,8 +46,8 @@ async function newProduct(req, res, next) {
     }
 
     await connection.query(
-      `INSERT INTO product (id_section, id_user, name, description, price, creation_date, modification_date)
-      VALUES (?,?,?,?,?,NOW(),NOW()) `,
+      `INSERT INTO product (id_user, name, description, price, creation_date, modification_date)
+      VALUES (?,?,?,?,NOW(),NOW()) `,
       [name, description, price]
     );
 
