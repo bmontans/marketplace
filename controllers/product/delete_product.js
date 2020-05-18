@@ -1,7 +1,7 @@
 require('dotenv').config();
 const { getConnection } = require('../../db');
 const { generateError } = require('../../helpers');
-async function deleteUser(req, res, next) {
+async function deleteProduct(req, res, next) {
   let connection;
   try {
     const { id } = req.params;
@@ -12,11 +12,11 @@ async function deleteUser(req, res, next) {
       throw generateError('Only admins can perform this action.', 400);
     }
 
-    await connection.query('delete from user where pk_id=?', [id]);
+    await connection.query('delete from product where pk_id=?', [id]);
 
     res.send({
       status: 'ok',
-      message: `This account (${id}) has been succesfully deleted.`
+      message: `This product (${id}) has been succesfully deleted.`
     });
   } catch (error) {
     next(error);
@@ -26,4 +26,4 @@ async function deleteUser(req, res, next) {
     }
   }
 }
-module.exports = { deleteUser };
+module.exports = { deleteProduct };

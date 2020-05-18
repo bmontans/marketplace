@@ -21,6 +21,7 @@ const { deactivateUser } = require('./controllers/user/deactivate_user');
 const { newProduct } = require('./controllers/product/new_product');
 const { productData } = require('./controllers/product/product_data');
 const { editProduct } = require('./controllers/product/edit_product');
+const { deleteProduct } = require('./controllers/product/delete_product');
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
@@ -41,10 +42,10 @@ app.put('/user/deactivate/:id', userIsAuthenticated, deactivateUser); //desactiv
 
 //RUTAS PRODUCTO
 // app.get("/products");
-app.post('/product', userIsAuthenticated, newProduct);
-app.get('/product/:id', userIsAuthenticated, userIsAdmin, productData);
-app.put('/product/:id', userIsAuthenticated, userIsAdmin, editProduct);
-// app.delete("/products/:id");
+app.post('/product', userIsAuthenticated, newProduct); //publicar un producto nuevo
+app.get('/product/:id', userIsAuthenticated, userIsAdmin, productData); // obtener info profucto
+app.put('/product/:id', userIsAuthenticated, userIsAdmin, editProduct); // editar info producto
+app.delete('/product/:id', userIsAuthenticated, userIsAdmin, deleteProduct); //borrar producto
 
 /*//RUTAS VALORACIONES
 app.post('/products/:id/rating');
