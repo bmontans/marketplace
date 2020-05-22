@@ -11,12 +11,15 @@ async function deleteProduct(req, res, next) {
     if (req.auth.role !== 'admin') {
       throw generateError('Only admins can perform this action.', 400);
     }
+    const [
+      result
+    ] = await connection.query('select name from product where pk_id=?', [id]);
 
     await connection.query('delete from product where pk_id=?', [id]);
-
+    console.log(result);
     res.send({
       status: 'ok',
-      message: `This product (${id}) has been succesfully deleted.`
+      message: `This product (${result[0].name}) has been succesfully deleted.`
     });
   } catch (error) {
     next(error);
