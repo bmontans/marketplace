@@ -12,12 +12,12 @@ async function getCategory(req, res, next) {
 
     const [result] = await connection.query(
       `SELECT pk_id,
-       name, 
+       name,
+       category,
        description, 
-       price, 
-       category
+       price
        FROM product 
-       WHERE tipo=?`,
+       WHERE category=?`,
       [tipo]
     );
 

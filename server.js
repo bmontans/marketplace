@@ -49,7 +49,7 @@ app.get('/product/:id', userIsAuthenticated, userIsAdmin, productData); // obten
 app.put('/product/:id', userIsAuthenticated, userIsAdmin, editProduct); // editar info producto
 app.delete('/product/:id', userIsAuthenticated, userIsAdmin, deleteProduct); //borrar producto
 app.get('/products', getAllProducts); // obtener todos los productos listados
-app.get('/product/:category', userIsAuthenticated, userIsAdmin, getCategory); //obtener todos los productos de x categoria
+app.get('/products/:category', userIsAuthenticated, userIsAdmin, getCategory); //obtener todos los productos de x categoria
 
 /*//RUTAS VALORACIONES
 app.post('/products/:id/rating');
