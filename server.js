@@ -44,7 +44,6 @@ app.delete('/user/:id', userIsAuthenticated, userIsAdmin, deleteUser); //borrar 
 app.put('/user/deactivate/:id', userIsAuthenticated, deactivateUser); //desactivar usuario
 
 //RUTAS PRODUCTO
-// app.get("/products");
 app.post('/product', userIsAuthenticated, newProduct); //publicar un producto nuevo
 app.get('/product/:id', userIsAuthenticated, userIsAdmin, productData); // obtener info profucto
 app.put('/product/:id', userIsAuthenticated, userIsAdmin, editProduct); // editar info producto
