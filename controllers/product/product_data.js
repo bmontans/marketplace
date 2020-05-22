@@ -11,7 +11,7 @@ async function productData(req, res, next) {
     const { id } = req.params;
 
     const [result] = await connection.query(
-      `SELECT pk_id , creation_date, name,
+      `SELECT pk_id , creation_date, name, category,
       description, price FROM product WHERE pk_id=?`,
       [id]
     );
@@ -25,6 +25,7 @@ async function productData(req, res, next) {
     const payload = {
       creation_date: productData.creation_date,
       name: productData.name,
+      category: productData.category,
       description: productData.description,
       price: productData.price
     };

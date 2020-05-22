@@ -10,7 +10,7 @@ async function getAllUsers(req, res, next) {
 
     const result = await connection.query(
       `SELECT pk_id,
-        name, 
+        username, 
         address, 
         email, 
         birthdate,

@@ -11,6 +11,7 @@ async function getAllProducts(req, res, next) {
     const result = await connection.query(
       `SELECT pk_id, 
         name,
+        category,
         description,
         price,
         creation_date,

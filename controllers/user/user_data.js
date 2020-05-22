@@ -1,7 +1,7 @@
-require("dotenv").config();
+require('dotenv').config();
 
-const { getConnection } = require("../../db");
-const { generateError } = require("../../helpers");
+const { getConnection } = require('../../db');
+const { generateError } = require('../../helpers');
 
 async function getUser(req, res, next) {
   let connection;
@@ -11,7 +11,7 @@ async function getUser(req, res, next) {
     const { id } = req.params;
 
     const [result] = await connection.query(
-      `SELECT pk_id ,	creation_date, name,
+      `SELECT pk_id ,	creation_date, username,
       email,
       birthdate, role FROM user WHERE pk_id=?`,
       [id]
@@ -22,18 +22,18 @@ async function getUser(req, res, next) {
     const [userData] = result;
     const payload = {
       creation_date: userData.creation_date,
-      name: userData.name,
+      username: userData.name,
       email: userData.email,
       birthdate: userData.birthdate,
-      role: userData.role,
+      role: userData.role
     };
-    if (userData.pk_id === req.auth.id || req.auth.role === "admin") {
-      payload.name = userData.name;
+    if (userData.pk_id === req.auth.id || req.auth.role === 'admin') {
+      payload.username = userData.username;
       payload.role = userData.role;
     }
     res.send({
-      status: "ok",
-      data: payload,
+      status: 'ok',
+      data: payload
     });
   } catch (error) {
     next(error);

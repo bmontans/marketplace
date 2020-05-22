@@ -7,6 +7,11 @@ const newProductSchema = Joi.object().keys({
     .min(2)
     .required()
     .error(generateError('Field must have between 2 and 50 characters')),
+  category: Joi.string()
+    .max(50)
+    .min(2)
+    .required()
+    .error(generateError('Field must have between 2 and 50 characters')),
   description: Joi.string()
     .max(250)
     .min(2)

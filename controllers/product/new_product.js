@@ -11,7 +11,7 @@ async function newProduct(req, res, next) {
     connection = await getConnection();
     await newProductSchema.validateAsync(req.body);
 
-    const { name, description, price } = req.body;
+    const { name, category, description, price } = req.body;
 
     const [
       existingProduct
@@ -21,9 +21,9 @@ async function newProduct(req, res, next) {
     }
 
     await connection.query(
-      `INSERT INTO product (id_user, name, description, price, creation_date, modification_date)
-      VALUES (?,?,?,?,NOW(),NOW()) `,
-      [id, name, description, price]
+      `INSERT INTO product (id_user, name, category, description, price, creation_date, modification_date)
+      VALUES (?,?,?,?,?,NOW(),NOW()) `,
+      [id, name, category, description, price]
     );
 
     res.send({
