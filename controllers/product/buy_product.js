@@ -13,13 +13,7 @@ async function buyProduct(req, res, next) {
     const id_user = req.auth.id;
     const id_product = req.params.id;
 
-    const {
-      precio,
-      direccion,
-      fecha_envio,
-      fecha_inicio,
-      fecha_fin
-    } = req.body;
+    const { description, rating } = req.body;
 
     if (id_user !== req.auth.id) {
       throw generateError(
@@ -28,18 +22,10 @@ async function buyProduct(req, res, next) {
       );
     }
     await connection.query(
-      `INSERT INTO transactions (id_user, id_product, description, rating, fecha_envio, fecha_inicio, fecha_fin) 
-      VALUES  (?,?,?,?,?,?,?)`,
+      `INSERT INTO transactions (id_user, id_product, description, rating, creation_date, modification_date) 
+      VALUES  (?,?,?,?,NOW(),NOW())`,
 
-      [
-        id_user,
-        id_product,
-        description,
-        direccion,
-        fecha_envio,
-        fecha_inicio,
-        fecha_fin
-      ]
+      [id_user, id_product, description, rating]
     );
 
     res.send({
